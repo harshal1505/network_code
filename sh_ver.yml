@@ -1,0 +1,10 @@
+- name: get show version
+  connection: network_cli
+  gather_facts: no
+  hosts: switch
+  
+  tasks:
+  - name: Run the show Version command
+    ios_command:
+      commands:
+        - show version

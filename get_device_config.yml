@@ -1,0 +1,16 @@
+---
+- name: Configure security paraments for Catalyst Switches
+  connection: network_cli
+  gather_facts: no
+  ignore_errors: yes
+  hosts: switch
+
+  tasks:
+    - name: get active configuration from device
+      include_role:
+        name: ansible-network.config_manager
+        tasks_from: get
+
+    - name: display the device configuration to stdout
+      debug:
+        msg: "{{ configuration.split('\n') }}"

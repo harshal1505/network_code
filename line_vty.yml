@@ -1,0 +1,24 @@
+- name: Configure Line VTY
+  ios_config:
+    lines:
+
+      - exec-timeout 10 0
+      - timeout login response 90
+      - transport preferred none
+      - logging synchronous
+      - login authentication default
+    parents: line con 0
+
+      - exec-timeout 10 0
+      - timeout login response 90
+      - logging synchronous
+      - transport preferred none
+      - transport input ssh
+    parents: line vty 0 4
+
+      - no exec
+      - transport input none
+    parents: line aux 0
+
+      - transport input none
+    parents: line vty 5 15

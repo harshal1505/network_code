@@ -1,0 +1,17 @@
+
+
+
+  - name: run multiple commands and evaluate the output
+    ios_command:
+      commands:
+        - show version
+        - show interfaces
+      wait_for:
+        - result[0] contains IOS
+        - result[1] contains Loopback0
+
+
+ - name: Include task list in play only if the condition is true
+      include: "{{ hostvar }}.yaml"
+      static: no
+      when: hostvar is defined

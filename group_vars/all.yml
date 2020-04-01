@@ -1,0 +1,31 @@
+---
+## This file will define the all group variables
+
+domain_name:
+sshtimeoutvalue: 60
+sshversion: 2
+ntp_1: 10.47.135.155
+ntp_2: 10.48.137.164
+ntp_3: 10.47.134.30
+ntp_4: 10.47.134.31
+na_siem: 10.47.169.79
+la_siem: 10.117.253.26
+eu_siem: 10.160.129.26
+ap_siem: 172.26.59.183
+na_hpna: 10.47.134.212
+ror_hpna: 10.47.134.213
+new_password: abc123
+privilege_value: 15
+na_forescout: 10.47.135.131
+la_forescout: 10.117.69.144
+eu_forescout: 10.160.67.48
+sg_forescout: 172.26.18.214
+forescout_lieberman: T5rCwr!t5
+na_nnm: 10.47.134.188
+rest_region_nnm: 10.47.134.189
+gloabl_nnm: 10.47.134.190
+nnmi_lieberman: Km8dyp7t
+ro_46_lieberman: B9r3vey6
+ro_47_lieberman: D1sC0vEr6
+rw_96_lieberman: Km8dyp7t
+rw_97_lieberman: T5rCwr!t5

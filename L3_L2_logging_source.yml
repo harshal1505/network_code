@@ -1,0 +1,32 @@
+- name: configure logging source command
+  connection: network_cli
+  gather_facts: no
+  hosts: switch
+
+  tasks:
+
+  - name: find L3 switch
+    ios_command:
+      commands: sh run | i router eigrp 1
+    register: l3_result
+
+  - name: configure source-interface on l3 switch
+    ios_config:
+      lines: logging source-interface loopback 0
+    when: l3_result.stdout == ["router eigrp 1"]
+
+  - name: find svi for L2 switch
+    ios_command:
+      commands: sh ip int br | i Vlan[2-5000]
+    when: l3_result.stdout != ["router eigrp 1"]
+    register: svi_result
+
+  - set_fact:  
+       svi: |  
+         {{svi_result.stdout_lines[0] |   
+           map('regex_findall','^([A-Za-z]+[0-9./]+)') |   
+           map('join') | list }}
+  
+  - name: configure source-interface on l2 switch
+    ios_config:
+      lines: logging source-interface {{ svi[0] }}

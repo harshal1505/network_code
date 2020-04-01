@@ -1,0 +1,1 @@
+['Vlan300                 10.31.49.47     YES NVRAM  up                    up']

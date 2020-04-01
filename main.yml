@@ -1,0 +1,29 @@
+- name: Configure security paraments for Catalyst Switches
+  connection: network_cli
+  gather_facts: no
+  ignore_errors: yes
+  hosts: switch
+  vars_files:
+    - group_vars/all.yml
+
+  tasks:
+    
+    - import_tasks: get_ios_type.yml
+   #- import_tasks: get_domain_name.yml
+   #- import_tasks: global_config.yml
+   #- import_tasks: hostname.yml
+   #- import_tasks: remove_ftp_tftp.yml
+   #- import_tasks: aaa_config.yml
+   #- import_tasks: username.yml
+   #- import_tasks: remove_nonstanderd_username.yml
+   #- import_tasks: logging_confg.yml
+   #- import_tasks: security_acl.yml 
+   #- import_tasks: snmp_config.yml
+   # - import_tasks: banner_motd.yml
+   #- import_tasks: line_vty.yml
+   #- import_tasks: ntp_server.yml
+
+  handlers:
+    - name: save_config
+      ios_config:
+        save_when: always 
