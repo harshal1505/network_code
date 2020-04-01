@@ -7,7 +7,7 @@
 
   - name: find svi for L2 switch
     ios_command:
-      commands: sh ip int br | i Vlan[2-5000]
+      commands: sh ip int br | i Vlan
     register: svi_result
 
   - set_fact:  
@@ -18,4 +18,4 @@
   
   - name: configure source-interface on l2 switch
     ios_config:
-      lines: logging source-interface {{ svi[0] }}
+      lines: logging source-interface {{ svi[1] }}

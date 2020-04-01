@@ -1,7 +1,7 @@
 [all:vars]
 ansible_connection=network_cli
 ansible_user=ps453673
-ansible_password=~oUxJ)jdiRZHy,
+ansible_password=Rq6b_tc0TIeZOE
 
 
 [router]
@@ -10,6 +10,8 @@ hopkinslab-site-b-bro.gw.cargill.com
 [switch]
 #hopkinslab-site-b-lcs.gw.cargill.com
 hopkinslab2-swt.gw.cargill.com
+hopkinslab10-swt.gw.cargill.com
+hopkinslab11-swt.gw.cargill.com
 
 [switch:vars]
 ansible_network_os=ios
