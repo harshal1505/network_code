@@ -1,0 +1,12 @@
+- name: find routers who dose not have loopback interface configured
+  connection: network_cli
+  gather_facts: no
+  hosts: router
+
+  tasks:
+
+  - name: find routers who dose not have loopback interface configured
+    ios_command:
+      commands: show interfaces | i Loopback0
+    register: result
+    failed_when: '"Loopback0" not in result.stdout[0]'
