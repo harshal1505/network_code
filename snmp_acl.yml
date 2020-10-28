@@ -2,7 +2,7 @@
   connection: network_cli
   gather_facts: no
   hosts: all
- #strategy: free
+  strategy: free
   ignore_errors: yes
 
   tasks:
@@ -10,30 +10,16 @@
     - name: Load ACL 46,96
       ios_config:
         lines:
-           - 10 permit {{ cnet_swt }} {{ wild_mask }}
-           - 20 permit {{ eg_snmp_nw_mgnt_lan_1 }} {{ wild_mask }}
-           - 30 permit {{ eg_snmp_nw_mgnt_lan_2 }} {{ wild_mask }}
-           - 40 permit {{ fp_snmp_nw_mgnt_lan_1 }} {{ wild_mask }}
-           - 50 permit {{ fp_snmp_nw_mgnt_lan_2 }} {{ wild_mask }}
+           - 10 permit {{ subnet }} {{ wild_mask }}
+           - 20 permit {{ subnet_lan_1 }} {{ wild_mask }}
+           - 30 permit {{ subnet_lan_2 }} {{ wild_mask }}
+           - 40 permit {{ subnet_lan_1 }} {{ wild_mask }}
+           - 50 permit {{ subnet_lan_2 }} {{ wild_mask }}
         parents: "{{ item }}"
       with_items:
         -  ip access-list standard 46
         -  ip access-list standard 96
-      notify: "Save Config"
 
-    - name: Load ACL 47,97
-      ios_config:
-        lines:
-           - remark ---SNMP-RW-Cargill-Mgmt-Access---
-           - 10 permit {{ cnet_swt }} {{ wild_mask }}
-           - 20 permit {{ eg_snmp_nw_mgnt_lan_2 }} {{ wild_mask }}
-           - 30 permit {{ fp_snmp_nw_mgnt_lan_2 }} {{ wild_mask }}
-           - 40 permit {{ sp_vmware }} {{ wild_mask }}
-           - 50 permit {{ wg_subnet }} {{ wild_mask }}
-           - 60 permit {{ sg_subnet }} {{ wild_mask }}
-        parents: "{{ item }}"
-      with_items:
-        -  ip access-list standard 47
-        -  ip access-list standard 97
 
-        save_when: changed
+
+

@@ -3,28 +3,28 @@
     lines:
       - logging host {{ na_siem }}
       - logging host {{ na_hpna }}
-  when: domain_name == 'gw.cargill.com'
+  when: domain_name == 'gw.com'
 
 - name: Configure a loggin host for a LA region host
   ios_config:
     lines:
       - logging host {{ la_siem }}
       - logging host {{ ror_hpna }}
-  when: domain_name == 'gw.la.cargill.com'
+  when: domain_name == 'gw.la.com'
 
 - name: Configure a loggin host for a EMEA region host
   ios_config:
     lines:
       - logging host {{ eu_siem }}
       - logging host {{ ror_hpna }}
-  when: domain_name == 'gw.eu.cargill.com'
+  when: domain_name == 'gw.eu.com'
 
 - name: Configure a loggin host for a APAC region host
   ios_config:
     lines:
       - logging host {{ ap_siem }}
       - logging host {{ ror_hpna }}
-  when: domain_name == 'gw.sg.cargill.com'
+  when: domain_name == 'gw.sg.com'
 
 - name: Configure common loggin commands
   ios_config:

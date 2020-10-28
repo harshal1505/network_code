@@ -1,7 +1,7 @@
 - name: load ACL 46
   ios_config:
     lines:
-        - remark ---SNMP-RO-Cargill-Mgmt-Access---
+        - remark ---SNMP-RO-Mgmt-Access---
         - 10 permit ip 10.2.82.0 0.0.0.255
         - 20 permit ip 10.47.134.0 0.0.0.255
         - 30 permit ip 10.47.135.0 0.0.0.255
@@ -16,7 +16,7 @@
 - name: load ACL 96
   ios_config:
     lines:
-        - remark ---SNMP-RO-Cargill-TGRC-ForeScout---
+        - remark ---SNMP-RO------
         - 10 permit ip 10.2.82.0 0.0.0.255
         - 20 permit ip 10.47.134.0 0.0.0.255
         - 30 permit ip 10.47.135.0 0.0.0.255
@@ -31,7 +31,7 @@
 - name: load ACL 47
   ios_config:
     lines:
-        - remark ---SNMP-RW-Cargill-Mgmt-Access---
+        - remark ---SNMP-RW--Mgmt-Access---
         - 10 permit ip 10.2.82.0 0.0.0.255
         - 20 permit ip 10.47.135.0 0.0.0.255
         - 30 permit ip 10.48.135.0 0.0.0.255
@@ -47,7 +47,7 @@
 - name: load ACL 97
   ios_config:
     lines:
-        - remark ---SNMP-RW-Carill-TGRC-ForeScout
+        - remark ---SNMP-RW---ForeScout
         - 10 permit ip 10.2.82.0 0.0.0.255
         - 20 permit ip 10.47.135.0 0.0.0.255
         - 30 permit ip 10.48.135.0 0.0.0.255
