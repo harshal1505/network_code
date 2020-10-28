@@ -1,0 +1,228 @@
+!
+no service pad
+service tcp-keepalives-in
+service tcp-keepalives-out
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+service password-encryption
+service nagle
+!
+hostname {{hostname}}
+!
+no vstack
+!
+logging trap informational
+logging buffered 64000 informational
+no logging console
+!
+aaa new-model
+
+aaa session-id common
+aaa authentication login default local
+aaa authorization console
+aaa authorization exec default local
+
+aaa session-id common
+!
+username admin privilege 15 secret {{password}}
+username netadmin privilege 15 secret {{password}}
+!
+system mtu 1500
+vtp mode transparent
+udld enable
+!
+spanning-tree mode rapid-pvst
+spanning-tree portfast bpduguard default
+spanning-tree extend system-id
+!
+no ip subnet-zero
+no ip source-route
+no bootp server
+no ip finger
+no ip routing
+no ip domain-lookup
+!
+ip domain-name {{domain}}
+!
+no errdisable detect cause loopback
+no errdisable detect cause gbic-invalid
+no errdisable detect cause pagp-flap
+no errdisable detect cause dtp-flap
+no errdisable detect cause link-flap
+no errdisable detect cause l2ptguard
+no errdisable detect cause dhcp-rate-limit
+no errdisable detect cause arp-inspection
+errdisable recovery cause arp-inspection
+errdisable recovery interval 120
+!
+ip dhcp snooping vlan {{adminvlan}}  
+no ip dhcp snooping information option
+ip dhcp snooping
+ip arp inspection vlan {{.adminvlan}}
+ip arp inspection validate src-mac ip
+!
+vlan internal allocation policy ascending
+!
+vlan {{.adminvlan}}
+ name {{.vlanname1}}
+!
+vlan 1001
+ name Trunk_Native_VLAN
+!
+crypto key generate rsa general-keys modulus 1024
+!
+ip ssh time-out 60
+ip ssh authentication-retries 3
+ip ssh version 2
+!
+ip device tracking probe delay 30 
+ip device tracking probe use-svi
+!
+cdp run
+!
+interface FastEthernet 0
+ description --> OoB Switch Management
+ no shutdown
+!
+!
+interface range {{.interfacetype}} {{.interfacenumber}} - {{.interfacenumber}}
+ description --> admin switch port
+ switchport access vlan {{.adminvlan}}
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 5
+ switchport port-security aging time 1
+ switchport port-security violation restrict
+ switchport port-security aging type inactivity
+ storm-control broadcast level 30.00
+ cdp enable
+ spanning-tree portfast
+ ip verify source
+ ip dhcp snooping limit rate 100
+ no shutdown
+ snmp trap mac-notification change added
+ snmp trap mac-notification change removed 
+!
+interface {{.interfacetype}} {{.interfacenumber}} 
+ description --> {{.description}}
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 1001
+ switchport trunk allowed vlan {{.adminvlan}},{{.voicevlan}}
+ switchport mode trunk
+ logging event trunk-status
+ ip arp inspection trust
+ ip dhcp snooping trust
+ storm-control broadcast level 30.00
+ cdp enable
+ no shutdown
+!
+interface Vlan 1
+ no ip address
+ shutdown
+!
+interface Vlan {{.adminvlan}}
+ description --> Switch Management 
+ ip address {{.ipwithsubnet}}
+ no shutdown
+!
+ip default-gateway {{.ip}}
+no ip http server
+no ip http secure-server
+!
+logging host {{.localsyslogip}}
+
+Logging host {{.hpna}}
+!
+access-list 46 remark --- SNMP-RO - Cargill Mgmt Access ---
+access-list 46 permit 10.2.82.0 0.0.0.255
+access-list 46 permit 10.47.134.0 0.0.0.255
+access-list 46 permit 10.47.135.0 0.0.0.255
+access-list 46 permit 10.48.134.0 0.0.0.255
+access-list 46 permit 10.48.135.0 0.0.0.255
+!
+access-list 47 remark --- SNMP RO ACL ---TGRC_ForeScout
+access-list 47 permit 10.2.82.0 0.0.0.255
+access-list 47 permit 10.47.135.0 0.0.0.255
+access-list 47 permit 10.48.135.0 0.0.0.255
+access-list 47 permit 10.117.69.0 0.0.0.255
+access-list 47 permit 10.160.67.0 0.0.0.255
+access-list 47 permit 172.26.18.0 0.0.0.255
+!
+access-list 96 remark --- SNMP-RW - Cargill Mgmt Access ---
+access-list 96 permit 10.2.82.0 0.0.0.255
+access-list 96 permit 10.47.134.0 0.0.0.255
+access-list 96 permit 10.47.135.0 0.0.0.255
+access-list 96 permit 10.48.134.0 0.0.0.255
+access-list 96 permit 10.48.135.0 0.0.0.255
+!
+access-list 97 remark ----SNMP RW ACL ----TGRC_ForeScout
+access-list 97 permit 10.2.82.0 0.0.0.255
+access-list 97 permit 10.47.135.0 0.0.0.255
+access-list 97 permit 10.48.135.0 0.0.0.255
+access-list 97 permit 10.117.69.0 0.0.0.255
+access-list 97 permit 10.160.67.0 0.0.0.255
+access-list 97 permit 172.26.18.0 0.0.0.255
+!
+snmp-server view snmppool iso included
+snmp-server group NACsnmpRO v3 auth read snmppool
+snmp-server user NACtrap NACsnmpRO v3 auth sha {{.LiebermanSafe}} priv aes 256 {{.LiebermanSafe}} access 47
+!
+snmp-server group NACsnmpRW v3 auth write snmppool
+snmp-server user NACsnmp NACsnmpRW v3 auth sha {{.LiebermanSafe}} priv aes 256 {{.LiebermanSafe}} access 97
+!
+
+snmp-server host {{.nnmi}} {{.LiebermanSafe}}
+snmp-server host 10.47.134.190 {{.LiebermanSafe}}
+!
+snmp-server host {{.regionalforescoutserverip}} traps version 2c {{.LiebermanSafe}}
+snmp-server host {{.regionalforescoutserverip} traps version 2c {{.LiebermanSafe}}
+!
+snmp-server trap-source interface {{.adminvaln}}
+snmp-server community {{.LiebermanSafe}} RO 46
+snmp-server community {{.LiebermanSafe}} RW 96
+snmp-server community {{.LiebermanSafe}} RO 47
+snmp-server community {{.LiebermanSafe}} RW 97
+snmp-server contact TCS NetOps
+snmp-server location {{.sitedetails}}
+snmp-server system-shutdown
+snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+snmp-server enable traps tty
+snmp-server enable traps config
+snmp-server enable traps envmon
+snmp-server ifindex persist
+snmp-server enable traps MAC-Notification
+!
+banner motd ^C
+---------------------------------------------------------------------
+By pressing any key, you are entering property owned by Cargill,
+Incorporated or its affiliated companies ("Cargill").  If you are
+not an authorized user of the Cargill Network, you should leave it
+immediately.  Access to and use of the Cargill Network, including any
+software which may be accessed through such Network, are governed by
+the policies and procedures implemented by Cargill, which may be
+changed by Cargill at any time.  Cargill expressly reserves the right
+to access, monitor, read, copy, print and/or disclose any e-mail,
+electronic files or other computer records created, received and/or
+stored through your use of the Cargill Network.
+---------------------------------------------------------------------
+
+^C
+!
+line con 0
+ exec-timeout 15 0
+ timeout login response 90
+ transport preferred none
+line vty 0 4
+ exec-timeout 15 0
+ timeout login response 90
+ transport preferred none
+ transport input ssh
+line vty 5 15
+ transport input none
+!
+ntp source interface {{.adminvaln}}
+ntp server 10.47.134.30 prefer
+ntp server 10.47.134.31
+ntp server 10.47.135.155
+ntp server 10.48.137.164
+!

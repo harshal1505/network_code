@@ -1,0 +1,14 @@
+- name: configure logging source command
+  connection: network_cli
+  gather_facts: no
+  hosts: all
+
+  tasks:
+
+  - name: find svi for L2 switch
+    ios_command:
+      commands: sh ip int br | i Vlan
+    register: printout
+  
+  - debug:
+      msg: CI {{ inventory_hostname }} has SVI's {{ printout.stdout_lines[0] }}

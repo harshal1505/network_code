@@ -1,0 +1,2 @@
+- set_fact:
+        domain_name: "{{ inventory_hostname | regex_search('\\.(.*)') | regex_replace('^\\W{1}') }}"

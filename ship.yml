@@ -1,0 +1,33 @@
+- name: configure logging source command
+  connection: network_cli
+  gather_facts: no
+  hosts: switch
+
+  tasks:
+
+  - name: "Get interface list"  
+    ios_command: 
+      commands:  
+        - "show ip interface brief | inc \\.[0-9]+[ ]+YES"  
+    register: printout
+
+  - set_fact:  
+       svi: |  
+         {{printout.stdout_lines[0] |   
+           map('regex_findall','^([A-Za-z]+[0-9./]+)') |   
+           map('join') | list }}
+
+- name: get wan_int details
+  ios_command:
+    commands: show ip cef | include 0.0.0.0/0
+  register: wan_interface_output
+
+- debug: var=wan_interface_output.stdout
+
+- set_fact:
+    wan_int: |
+      {{printout.stdout_lines[0] |
+        map('regex_findall','[A-Za-z]+[0-9/]+') |
+        map('join') | list }}
+
+- debug: var=wan_int

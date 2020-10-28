@@ -1,0 +1,8 @@
+- name: check AP summary
+  gather_facts: false
+  hosts: wlc
+
+  tasks:
+  - name: Test Show Command
+    aireos_command:
+      commands: show ap summary

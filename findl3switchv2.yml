@@ -1,0 +1,27 @@
+- name: find L3 switch
+  connection: network_cli
+  gather_facts: no
+  hosts: switch
+
+  tasks:
+
+  - name: find eigrp config
+    ios_command:
+      commands: show running-config | inc router eigrp
+    register: eigrp_result
+
+  - name: find static route
+    ios_command:
+      commands: show running-config | inc ip route 0.0.0.0
+    register: static_result
+    when: "'router eigrp' not in eigrp_result.stdout[0]"
+
+  - name: find static route
+    ios_command:
+      commands: show running-config | inc ip route 0.0.0.0
+    register: static_result
+    when: "'router eigrp' not in eigrp_result.stdout[0]"
+
+  - debug:
+      msg: CI {{ inventory_hostname }} is L3 Switch
+    when: (eigrp_result is succeeded) or (static_result is succeeded)

@@ -1,0 +1,11 @@
+- name: Deploy Config
+  gather_facts: no
+  hosts: router
+  tasks:
+
+  - name: Enable SCP server and configuration archive
+    ios_config:
+      lines: 
+        - "path flash:"
+      parents: archive
+      before: ip scp server enable

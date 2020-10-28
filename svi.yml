@@ -1,0 +1,19 @@
+- name: configure logging source command
+  connection: network_cli
+  gather_facts: no
+  hosts: switch  
+  
+  tasks:
+  
+  - name: find svi as {{ inventory_hostname_short }} is L2 switch
+    ios_command:
+      commands: sh ip int br | i Vlan[2-5000]
+    register: svi_result
+
+  - name: find svi
+    shell: 
+      cmd: svi_result.stdout | cut -d "'" -f 2 | awk '{print $1}'
+    register: svi
+
+  - debug:
+      msg: vlan_id is {{ svi.stdout }}

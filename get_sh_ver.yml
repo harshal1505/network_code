@@ -1,0 +1,31 @@
+- name: get hardware details
+  connection: network_cli
+  gather_facts: no
+  ignore_errors: yes
+  hosts: all
+
+  tasks:
+
+  - name: run show version
+    cisco.ios.ios_command:
+      commands: show version
+    register: show_version
+  
+  - name: run show license
+    cisco.ios.ios_command:
+      commands: show license
+    register: show_license
+    when: "'Cisco IOS XE Software' not in show_version.stdout[0]"
+
+  - name: save output
+    copy: 
+      content: "Show_Version \n {{ show_version.stdout[0] }}"
+      dest: "device_info/{{ inventory_hostname }}.txt"
+    delegate_to: localhost
+
+  - name: save output adding sh_licence
+    copy: 
+      content: "Show_Version \n {{ show_version.stdout[0] }} \n \n Show_License \n {{ show_license.stdout[0] }}"
+      dest: "device_info/{{ inventory_hostname }}.txt"
+    when: "show_license.stdout[0] is defined"
+    delegate_to: localhost

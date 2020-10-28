@@ -1,0 +1,23 @@
+- name: Configure security paraments for Catalyst Switches
+  connection: network_cli
+  gather_facts: no
+  hosts: switch
+
+  tasks:
+
+    - name: Gather only the interfaces resource facts and no legacy facts
+      ios_facts:
+        gather_subset:
+          - '!all'
+          - '!min'
+        gather_network_resources:
+          - interfaces
+      register: interfaces
+
+    - name: Create list ports
+      set_fact:  
+          interface: "{{ interfaces | regex_search(\S+Ethernet+\S+) | regex_replace($&\n) }}"
+
+    - debug: var=interface
+
+

@@ -1,0 +1,9 @@
+- name: configure logging source command
+  connection: network_cli
+  gather_facts: no
+  hosts: router
+     
+  tasks:
+  - name: configure logging command
+    ios_config:
+      lines: logging source-interface {{ mngmt_int }}

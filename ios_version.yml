@@ -1,0 +1,21 @@
+- name: Get the IOS Ver of CI
+  connection: network_cli
+  gather_facts: no
+  ignore_errors: yes
+  hosts: all
+
+  vars: 
+    - ansible_network_os: ios
+    - ansible_user: h181203
+    - ansible_password: Mac@#1986
+
+  tasks:
+
+  - name: Run the show Version command
+    ios_command:
+      commands: sh ver | i Software
+    register: ios
+
+  - debug:
+      msg: CI {{ inventory_hostname }} has IOS version {{ ios.stdout }}
+    

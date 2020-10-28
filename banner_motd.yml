@@ -1,0 +1,5 @@
+- name: Configure banner from file
+  ios_banner:
+    banner:  motd
+    text: "{{ lookup('file', 'group_files/banner.cfg') }}"
+    state: present
