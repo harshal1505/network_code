@@ -1,0 +1,30 @@
+- name: load SNMP config into switches
+  ios_config:
+    lines:
+      - snmp-server community {{ ro_46_lieberman }} RO 46
+      - snmp-server community {{ rw_96_lieberman }} RW 96
+      - snmp-server community {{ ro_47_lieberman }} RO 47
+      - snmp-server community {{ rw_97_lieberman }} RW 97
+      - snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+      - snmp-server enable traps tty
+      - snmp-server enable traps eigrp
+      - snmp-server enable traps envmon fan shutdown supply temperature status
+      - snmp-server enable traps config
+      - snmp-server enable traps mac-notification change move threshold
+      - snmp-server host {{ na_forescout }} version 2c {{ forescout_lieberman }}
+        when: domain_name=gw.cargill.com
+      - snmp-server host {{ la_forescout }} version 2c {{ forescout_lieberman }}
+        when: domain_name=gw.la.cargill.com
+      - snmp-server host {{ eu_forescout }} version 2c {{ forescout_lieberman }}
+        when: domain_name=gw.eu.cargill.com
+      - snmp-server host {{ sg_forescout }} version 2c {{ forescout_lieberman }}
+        when: domain_name=gw.sg.cargill.com
+      - snmp-server host {{ global_forescout }} version 2c {{ forescout_lieberman }}
+      - snmp-server host {{ na_nnmi }} version 2c {{ nnmi_lieberman }}
+        when: domain_name=gw.cargill.com
+      - snmp-server host {{ rest_region_nnmi }} version 2c {{ nnmi_lieberman }}
+        when: 
+          - domain_name=gw.la.cargill.com
+          - domain_name=gw.eu.cargill.com
+          - domain_name=gw.sg.cargill.com
+      - snmp-server host {{ gloabl_nnmi }} version 2c {{ nnmi_lieberman }}

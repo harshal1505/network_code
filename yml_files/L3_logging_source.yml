@@ -1,0 +1,9 @@
+- name: configure logging source command
+  connection: network_cli
+  gather_facts: no
+  hosts: routers
+  
+  tasks:
+  - name: configure logging command
+    ios_config:
+      lines: logging source-interface {{ loopback }}

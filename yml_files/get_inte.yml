@@ -1,0 +1,21 @@
+- name: Configure security paraments for Catalyst Switches
+  connection: network_cli
+  gather_facts: no
+  hosts: switch
+
+  tasks:
+
+    - name: find interfaces
+      ios_command:
+        commands: sh ip int br | i Ethernet
+      register: interfacesoutput
+
+    - set_fact:  
+        interface: |  
+          {{interfacesoutput.stdout_lines[0] |   
+            map('regex_findall','\S+Ethernet+\S+') |   
+            map('join') | list }}
+
+    - name: identify access port and push mac-notification
+      include_tasks: access_port.yml
+      loop: "{{ interface }}"

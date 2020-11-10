@@ -1,0 +1,39 @@
+- name: Configure securit
+  hosts: checkpoint
+  connection: httpapi
+
+  vars:
+    my_token: "{{ token }}"
+    gather_facts: no
+
+  tasks:
+     
+  - name: "Get IP from FQDNS host"
+    set_fact: ip_addr={{ lookup('dig', "{{ inventory_hostname }}" ) }}      
+    delegate_to: localhost
+            
+  - name: "Retrieve the Cred"
+    uri:     
+     url: https://erpm.cargill.com/ERPMWebService/AuthService.svc/REST/StoredCredential/IgnoreCheckout?SystemType=Linux&SystemName={{ ip_addr }}&AccountName=admin
+     method: GET
+     validate_certs: no
+     headers:
+       AuthenticationToken:  "{{ my_token }}"
+       Cache-Control: no-cache
+       Content-Type: application/json
+       cache-control: no-cache | cut -d':' -f10 | sed 's/^[^"]*"//; s/".*//            
+    register: result                
+    delegate_to: localhost
+                     
+        
+  - name: "Set connection httpapi"
+    set_fact: ansible_ssh_pass={{ result.json.Password }}   ansible_connection=httpapi          
+    failed_when: ansible_ssh_pass is undefined or ansible_ssh_pass is none or ansible_ssh_pass == ''
+    register: sshconn
+    delegate_to: localhost     
+
+  - name: show-dns-domains
+    cp_mgmt_dns_domain_facts:
+      details_level: standard
+      limit: 50
+      offset: 0

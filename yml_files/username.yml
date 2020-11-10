@@ -1,0 +1,9 @@
+- name: Add a user specifying password type
+  ios_user:
+    aggregate:
+      - name: admin
+      - name: netadmin
+    privilege: "{{ privilege_value }}"
+    configured_password: "{{ new_password }}"
+    password_type: secret
+    state: present

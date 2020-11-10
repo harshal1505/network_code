@@ -1,0 +1,19 @@
+- name: configure logging source command
+  connection: network_cli
+  gather_facts: no
+  hosts: switch
+
+  tasks:
+
+  - name: find svi for L2 switch
+    ios_command:
+      commands: sh ip int br | i Vlan
+    register: svi_result
+
+  - set_fact:  
+       svi: |  
+         {{svi_result.stdout_lines[0] | map('regex_findall','^([A-Za-z]+[0-9./]+)') | map('join') | list }}
+  
+  - name: configure source-interface on l2 switch
+    ios_config:
+      lines: logging source-interface {{ svi[1] }}

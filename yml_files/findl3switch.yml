@@ -1,0 +1,16 @@
+- name: find L3 switch
+  connection: network_cli
+  gather_facts: no
+  hosts: switch
+
+  tasks:
+
+  - name: find L3 switch
+    ios_command:
+      commands: sh run | i router eigrp 1
+    register: l3_result
+    failed_when: l3_result.stdout != ["router eigrp 1"]
+
+  - debug:
+      msg: CI {{ inventory_hostname }} is L3 Switch
+    when: l3_result.stdout == ["router eigrp 1"]

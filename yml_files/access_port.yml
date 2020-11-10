@@ -1,0 +1,12 @@
+- name: identify access port
+  ios_command:
+    commands: sh run int {{ item }} | i mode access
+  register: result
+
+- name: push snmp
+  ios_config:
+    lines:
+      - snmp trap mac-notification change added
+      - snmp trap mac-notification change removed
+    parents: int {{ item }}
+  when: result.stdout == ["switchport mode access"]

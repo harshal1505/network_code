@@ -1,0 +1,14 @@
+- name: find L3 switch
+  connection: network_cli
+  gather_facts: no
+  hosts: localhost
+  strategy: free
+
+  tasks:
+
+  - name: Find Gateway Config
+    find:
+      paths: /Users/harshad/Documents/Playbooks/sw_backup
+      recurse: no
+      file_type: file
+      excludes: 'default-gateway'

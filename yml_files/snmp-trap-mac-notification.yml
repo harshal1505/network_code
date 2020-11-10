@@ -1,0 +1,6 @@
+- name: configue ports if its access
+  ios_config:
+    lines:
+      - snmp trap mac-notification change added
+      - snmp trap mac-notification change removed
+    parents: "{{ item }}"

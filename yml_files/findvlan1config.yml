@@ -1,0 +1,16 @@
+- name: find vlan1 config
+  connection: network_cli
+  gather_facts: no
+  hosts: switch
+
+  tasks:
+
+    - name: find vlan1 config
+      ios_command:
+        commands:
+           - sh run int vlan 1 | i shutdown
+      register: command_result
+
+    - debug:
+        msg: CI {{ inventory_hostname }} is running on VLAN1
+      when: "'shutdown' not in command_result.stdout"

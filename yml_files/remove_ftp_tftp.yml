@@ -1,0 +1,7 @@
+
+- name: Remove ftp and tftp config
+  ios_config:
+    lines:
+      - no ip ftp username
+      - no ip ftp password
+      - no ip tftp source-interface

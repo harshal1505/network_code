@@ -1,0 +1,22 @@
+- name: find if switch has mgmt int
+  connection: network_cli
+  gather_facts: no
+  ignore_errors: yes
+  hosts: all
+  vars: 
+    - ansible_network_os: ios
+    - ansible_user: h181203
+    - ansible_password: Mac@#1986
+
+  tasks:
+
+  - name: find vrf forwarding Mgmt-vrf 
+    ios_command:
+      commands: sh run | s aaa group 
+    register: output
+
+# IOS Version 12.2(55) mostly on 3750,3560,2960,2960C,2960S hardware is old IOS and dose not support section command
+
+  - debug:
+      msg: CI {{ inventory_hostname }} has VRF enabled
+    when: "'ip vrf forwarding' in output.stdout[0]"

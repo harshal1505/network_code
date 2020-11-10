@@ -1,0 +1,4 @@
+- name: check the running-config against master config
+  ios_config:
+    diff_against: intended
+    intended_config: "{{ lookup('file', 'master.cfg') }}"

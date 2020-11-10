@@ -1,0 +1,7 @@
+- name: Configure NTP Servers
+  ios_config:
+    lines:
+      - ntp server {{ ntp_1 }} prefer
+      - ntp server {{ ntp_2 }}
+      - ntp server {{ ntp_3 }}
+      - ntp server {{ ntp_4 }}
