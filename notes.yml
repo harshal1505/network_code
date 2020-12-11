@@ -11,7 +11,7 @@
         - result[1] contains Loopback0
 
 
- - name: Include task list in play only if the condition is true
+- name: Include task list in play only if the condition is true
       include: "{{ hostvar }}.yaml"
       static: no
       when: hostvar is defined

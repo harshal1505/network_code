@@ -58,10 +58,9 @@ Currently, the CNetOps teams is the mantainer of this playbook.
 # Code Owners
 
 The CODEOWNERS file defines who has the ultimate authority to merge to protected branches.
-As per the Product Owner's request, the sole code owner of the nd_switch_security repository is **Veeramanikandan Chinnapaiyan**
+As per the Product Owner's request, the sole code owner of the nd_switch_security repository is 
 The Network Infrastructure Organization has two Owners:
-* ZekeSantamaria
 * AnsiblePSAutomationAccount3
 These two owners have full administrative access to all the repos within the organization and therefore, can also merge code.
-ZekeSantamaria is the lead automation engineer and the owner of the organization.
+ is the lead automation engineer and the owner of the organization.
 AnsiblePSAutomationAccount3 is our process ID that the network automation team uses for automated proccess and therefore, owner level access is required.

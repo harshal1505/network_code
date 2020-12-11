@@ -5,8 +5,8 @@
   hosts: all
   vars: 
     - ansible_network_os: ios
-    - ansible_user: h181203
-    - ansible_password: Mac@#1986
+    - ansible_user: 
+    - ansible_password: 
 
   tasks:
 
