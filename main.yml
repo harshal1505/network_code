@@ -2,35 +2,9 @@
   connection: network_cli
   gather_facts: no
   ignore_errors: yes
-  hosts: switch
+  hosts: all
 
   tasks:
     
-    - import_tasks: get_ios_type.yml
-   #- import_tasks: get_domain_name.yml
-   #- import_tasks: global_config.yml
-   #- import_tasks: hostname.yml
-   #- import_tasks: remove_ftp_tftp.yml
-   #- import_tasks: aaa_config.yml
-   #- import_tasks: username.yml
-   #- import_tasks: remove_nonstanderd_username.yml
-   #- import_tasks: logging_confg.yml
-   #- import_tasks: security_acl.yml 
-   #- import_tasks: snmp_config.yml
-   # -import_tasks: banner_motd.yml
-   #- import_tasks: line_vty.yml
-   #- import_tasks: ntp_server.yml
+    - import_tasks: ntc_parser.yml
 
-  handlers:
-    - name: save_config
-      ios_config:
-        save_when: always 
-
-- name: Configure line VTY acl's for internet facing Devices
-  connection: network_cli
-  gather_facts: no
-  hosts: ~\S+(-xn|-pfr)\S+
-  ignore_errors: yes
-
-  tasks:
-    - import_tasks: internet_facing_acl.yml

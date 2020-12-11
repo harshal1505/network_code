@@ -10,3 +10,12 @@
       - snmp trap mac-notification change removed
     parents: int {{ item }}
   when: result.stdout == ["switchport mode access"]
+
+  - name: Configure line VTY acl's for internet facing Devices
+  connection: network_cli
+  gather_facts: no
+  hosts: ~\S+(-xn|-pfr)\S+
+  ignore_errors: yes
+
+  tasks:
+    - import_tasks: internet_facing_acl.yml
