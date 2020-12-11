@@ -1,0 +1,7 @@
+access_ports:
+  switch_l3:
+    GigabitEthernet0/1: 103
+  switch_l2-swt:
+    GigabitEthernet1/0/14: 231
+    GigabitEthernet1/0/43: 231
+    GigabitEthernet1/0/7: 102

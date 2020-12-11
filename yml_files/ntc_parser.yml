@@ -1,0 +1,14 @@
+#ansible.netcommon.cli_parse – Parse cli output or text using a variety of parsers
+#This plugin is part of the ansible.netcommon collection (version 1.4.1).
+#To install it use: ansible-galaxy collection install ansible.netcommon.
+#To use it in a playbook, specify: ansible.netcommon.cli_parse.
+
+#Docs
+#https://docs.ansible.com/ansible/latest/network/user_guide/cli_parsing.html
+
+What is CLI Parser
+
+The ansible.netcommon collection version 1.2.0 or later includes the cli_parse module that can run CLI commands and parse the semi-structured text output.
+
+Parsing semi-structured data such as network configurations into structured data allows programmatic use of the data from that device. 
+Use cases include automated troubleshooting, creating dynamic documentation, updating IPAM (IP address management) tools and so on

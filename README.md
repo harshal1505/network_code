@@ -1,2 +1,2 @@
 # network_code
-first commit
+Re-structuring files

@@ -1,0 +1,9 @@
+---
+#  This file will define the all group variables
+
+my_token: "{{ token }}"
+uid: "{{ pid }}"
+ansible_network_os: ios
+ansible_user: ''
+sshtimeoutvalue: 60
+sshversion: 2

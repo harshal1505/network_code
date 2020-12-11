@@ -1,0 +1,6 @@
+wan_interfaces:
+  router-vpn:
+    GigabitEthernet0/1: 196.47.174.98/29
+  abidjan22-vpn:
+    GigabitEthernet0/1: 213.136.103.46/30
+  
