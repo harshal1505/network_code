@@ -1,0 +1,12 @@
+- name: Parse "show interfaces switchport" command output
+  ansible.netcommon.cli_parse:
+    command: "show interfaces switchport"
+    parser:
+      name: ansible.netcommon.ntc_templates
+  register: show_interfaces_switchport
+
+- name: Save parsed file 
+  copy: 
+    content: "{{ show_interfaces_switchport.parsed | to_nice_yaml }}"
+    dest: "host_vars/{{ inventory_hostname }}/interfaces_switchport.yml"
+  delegate_to: localhost
