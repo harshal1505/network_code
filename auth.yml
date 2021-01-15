@@ -1,0 +1,22 @@
+    - name: "Retrieve credentials from ERPM"
+      uri:
+        url: 'https://erpm.cargill.com/ERPMWebService/AuthService.svc/REST/StoredCredential/IgnoreCheckout?SystemName=na.corp.cargill.com&AccountName=NA\{{ uid }}'
+        method: GET
+        validate_certs: no
+        headers:
+         Content-Type: application/json
+         AuthenticationToken:  "{{ my_token }}"
+         cache-control: no-cache | cut -d':' -f10 | sed 's/^[^"]*"//; s/".*//
+      register: result
+      run_once: True
+      delegate_to: localhost
+      check_mode: false
+
+
+    - name: "Set remote connection"
+      set_fact: ansible_password={{ result.json.Password }} ansible_user={{ uid }} ansible_connection=network_cli
+      failed_when: ansible_password is undefined or ansible_password is none or ansible_password == ''
+      register: sshconn
+      ignore_errors:  yes
+      run_once: True
+      delegate_to: localhost
