@@ -1,0 +1,69 @@
+- name: enabling SNMP traps on access ports
+  ios_config:
+    lines:
+      - snmp trap mac-notification change added
+      - snmp trap mac-notification change removed
+    parents: interface {{ item.interface }} 
+  with_items: "{{ interfaces }}"
+  when: 
+    - item.admin_mode == "static access"
+    - "'Po' not in '{{ item.interface }}'"
+    - "'member' not in '{{ item.mode }}'"
+
+## host_vars will look like below
+interfaces: 
+-   access_vlan: '2000'
+    admin_mode: trunk
+    interface: Te1/1/1
+    mode: trunk (member of bundle Po1)
+    native_vlan: '1'
+    switchport: Enabled
+    switchport_monitor: ''
+    switchport_negotiation: 'On'
+    trunking_vlans:
+    - 2000,2128
+    voice_vlan: none
+-   access_vlan: '2000'
+    admin_mode: trunk
+    interface: Te1/1/2
+    mode: trunk (member of bundle Po2)
+    native_vlan: '1'
+    switchport: Enabled
+    switchport_monitor: ''
+    switchport_negotiation: 'On'
+    trunking_vlans:
+    - 2000,2160
+    voice_vlan: none
+-   access_vlan: '2000'
+    admin_mode: trunk
+    interface: Te1/1/3
+    mode: trunk (member of bundle Po3)
+    native_vlan: '1'
+    switchport: Enabled
+    switchport_monitor: ''
+    switchport_negotiation: 'On'
+    trunking_vlans:
+    - 2000,2096
+    voice_vlan: none
+-   access_vlan: '2000'
+    admin_mode: trunk
+    interface: Te1/1/4
+    mode: trunk (member of bundle Po4)
+    native_vlan: '1'
+    switchport: Enabled
+    switchport_monitor: ''
+    switchport_negotiation: 'On'
+    trunking_vlans:
+    - 2000,2192
+    voice_vlan: none
+-   access_vlan: '2000'
+    admin_mode: static access
+    interface: Te1/1/5
+    mode: static access (member of bundle Po7)
+    native_vlan: '1'
+    switchport: Enabled
+    switchport_monitor: ''
+    switchport_negotiation: 'Off'
+    trunking_vlans:
+    - ALL
+    voice_vlan: none
