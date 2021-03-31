@@ -7,4 +7,6 @@
   tasks:
     
     - import_tasks: ntc_parser.yml
+    - import_tasks: sh_ip_int.yml
+    - import_tasks: config.yml
 
