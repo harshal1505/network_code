@@ -1,0 +1,3 @@
+- name: add helper address
+  include: int.yml
+  with_items: "{{ interfaces }}"
