@@ -1,0 +1,12 @@
+- name: Parse "show ip interface" command output
+  ansible.netcommon.cli_parse:
+    command: "show ip interface"
+    parser:
+      name: ansible.netcommon.ntc_templates
+  register: show_ip_interface
+
+- name: Save parsed file 
+  copy: 
+    content: "interfaces: \n{{ show_ip_interface.parsed | to_yaml }}"
+    dest: "host_vars/{{ inventory_hostname }}.yml"
+  delegate_to: localhost
