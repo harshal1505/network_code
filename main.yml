@@ -1,11 +1,9 @@
-- name: Configure security paraments for Catalyst Switches
+- name: re-configure helper  
   connection: network_cli
   gather_facts: no
-  ignore_errors: yes
   hosts: all
+  ignore_errors: yes
 
   tasks:
-    
     - import_tasks: sh_ip_int.yml
-    - import_tasks: config.yml
-
+    - import_tasks: reconfigure_helper.yml

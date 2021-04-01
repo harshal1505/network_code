@@ -1,0 +1,9 @@
+- name: add helper address
+  ios_config:
+    lines: 
+      - ip helper-address {{ slo_dhcp_ip }}
+      - ip helper-address {{ item }}
+    parents: interface {{ inner_item.intf }}
+  loop: "{{ inner_item.ip_helper }}"
+  when: inner_item.ip_helper != []
+

@@ -1,0 +1,12 @@
+- name: remove helper address
+  include_tasks: remove_helper.yml
+  loop: "{{ interfaces }}"
+  loop_control:
+    loop_var: inner_item
+
+- name: add helper address
+  include_tasks: add_helper.yml
+  loop: "{{ interfaces }}"
+  loop_control:
+    loop_var: inner_item
+

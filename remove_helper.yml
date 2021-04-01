@@ -1,0 +1,8 @@
+- name: remove helper address
+  ios_config:
+    lines: 
+      - no ip helper-address {{ item }}
+    parents: interface {{ inner_item.intf }}
+  loop: "{{ inner_item.ip_helper }}"
+  when: inner_item.ip_helper != []
+
